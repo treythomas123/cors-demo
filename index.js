@@ -1,4 +1,5 @@
 var http = require('http');
+var phantom = require('phantom');
 
 http.createServer( function(req,res) {
     res.end(`
@@ -15,7 +16,6 @@ http.createServer( function(req,res) {
     `);
 }).listen(8080);
 
-
 http.createServer( function(req,res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     if (req.method === 'OPTIONS') {
@@ -24,9 +24,8 @@ http.createServer( function(req,res) {
     res.end("Hello from 8081 (" + req.method + ")");
 }).listen(8081);
 
-
-require('phantom').create()
-    .then( phantom => phantom.createPage() )
+phantom.create()
+    .then( ph => ph.createPage() )
     .then( page => {
         page.property('onConsoleMessage', function(msg) {
             console.log(msg)
